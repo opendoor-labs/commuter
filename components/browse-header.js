@@ -84,7 +84,7 @@ class BrowseHeader extends React.Component<*> {
             </a>
           </React.Fragment>
         )}
-        <style jsx>{`
+        <style>{`
           nav {
             display: flex;
             align-items: center;

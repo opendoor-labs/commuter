@@ -40,6 +40,50 @@ const { transforms, displayOrder } = [
 
 const suffixRegex = /(?:\.([^.]+))?$/;
 
+class NewNotebookPreview extends React.Component<*> {
+  componentDidMount () {
+      const script = document.createElement("script");
+      script.type = 'text/javascript';
+      script.async = true;
+      script.innerHTML = `
+      function toggleCell(btn, cell) {
+        divs = Array.from(cell.getElementsByTagName('div'))
+        if (btn.textContent == '-') { // hide
+          btn.textContent = '+'
+          divs.forEach((div) => div.style.display = "none");
+        } else { // unhide
+          btn.textContent = '-'
+          divs.forEach((div) => div.style.display = "");
+        }
+      };
+      displays = Array.from(document.getElementsByClassName('cell_display'));
+      displays.forEach((display) => {
+        display.style.maxHeight = '100%';
+        display.style.overflowY = 'hidden';
+      });
+      cells = Array.from(document.getElementsByClassName('cell'));
+      cells.forEach((cell) => {
+        var btn = document.createElement("BUTTON");
+        var t = document.createTextNode("-");
+        btn.appendChild(t);
+        btn.onclick = () => toggleCell(btn, cell);
+        var contentCell = cell.getElementsByTagName('div')[0];
+        cell.insertBefore(btn, contentCell)
+      });`
+      document.body.appendChild(script);
+  }
+
+  render() {
+    return (
+        <NotebookPreview
+          notebook={this.props.notebook}
+          displayOrder={this.props.displayOrder}
+          transforms={this.props.transforms}
+        />
+      )
+  }
+}
+
 class File extends React.Component<*> {
   shouldComponentUpdate() {
     return false;
@@ -120,7 +164,7 @@ export const Entry = (props: EntryProps) => {
     case "notebook":
       return (
         <Styles>
-          <NotebookPreview
+          <NewNotebookPreview
             notebook={props.entry.content}
             displayOrder={displayOrder}
             transforms={transforms}
