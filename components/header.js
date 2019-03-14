@@ -33,6 +33,8 @@ class CommuterMenu extends React.Component<*> {
     this.props.active === current ? "active" : "";
 
   render() {
+    // TODO: Removed styled-jsx because of JS errors
+    // But that impacts the header style a bit
     return (
       <nav className="main-header">
         <ul className="items">
@@ -54,7 +56,7 @@ class CommuterMenu extends React.Component<*> {
             </li>
           ) : null}
         </ul>
-        <style jsx>{`
+        <style>{`
           nav {
             background: ${theme.background};
             border: 1px solid ${theme.outline};

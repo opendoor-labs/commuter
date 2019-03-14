@@ -16,6 +16,49 @@ const Link = ({ to, children, basepath }) => (
   </NextLink>
 );
 
+// The HideCodeButton toggles the visibility of notebook input and stderr cells
+class HideCodeButton extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleClick = this.handleClick.bind(this);
+
+    this.state = {
+      isHidden: false
+    };
+  }
+
+  handleClick() {
+    // code inputs
+    const inputs = Array.from(document.getElementsByClassName('input'));
+    // error logs
+    const errs = Array.from(document.getElementsByClassName('nteract-display-area-stderr'));
+    const objs = inputs.concat(errs)
+    // toggle visibility
+    if (this.state.isHidden) {
+      this.setState({ isHidden: false})
+      objs.forEach((obj) => obj.style.display = '');
+    } else {
+      this.setState({ isHidden: true})
+      objs.forEach((obj) => obj.style.display = 'none');
+    }
+  }
+
+  render() {
+    const { isHidden } = this.state;
+
+    return (
+      <button
+        id="hide-code"
+        className="ops"
+        onClick={this.handleClick}
+      >
+        {isHidden ? 'Show Code' : 'Hide Code'}
+      </button>
+    );
+  }
+}
+
 class BrowseHeader extends React.Component<*> {
   props: {
     path: string,
@@ -46,6 +89,8 @@ class BrowseHeader extends React.Component<*> {
     // const serverSide = typeof document === "undefined";
     const viewingNotebook = filePath.endsWith(".ipynb");
 
+    // TODO: Removed styled-jsx because of JS errors
+    // But that impacts the header style a bit
     return (
       <nav>
         <ul className="breadcrumbs">
@@ -79,12 +124,13 @@ class BrowseHeader extends React.Component<*> {
                 Run
               </a>
             ) : null}
+            <HideCodeButton></HideCodeButton>
             <a href={filePath} download className="ops">
               Download
             </a>
           </React.Fragment>
         )}
-        <style jsx>{`
+        <style>{`
           nav {
             display: flex;
             align-items: center;
@@ -162,6 +208,11 @@ class BrowseHeader extends React.Component<*> {
 
           .ops:not(:last-child) {
             margin-right: 10px;
+          }
+
+          #hide-code {
+            white-space: nowrap;
+            margin-left: 10px;
           }
         `}</style>
       </nav>

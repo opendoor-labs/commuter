@@ -98,8 +98,8 @@ class ViewPage extends React.Component<ViewPageProps, ViewPageState> {
             />
             <style jsx>{`
               margin-top: 2rem;
-              padding-left: 2rem;
-              padding-right: 2rem;
+              padding-left: 20rem;
+              padding-right: 20rem;
             `}</style>
           </div>
         </Body>
