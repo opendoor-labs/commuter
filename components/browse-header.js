@@ -16,6 +16,46 @@ const Link = ({ to, children, basepath }) => (
   </NextLink>
 );
 
+class HideButton extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleClick = this.handleClick.bind(this);
+
+    this.state = {
+      isHidden: false
+    };
+  }
+
+  handleClick() {
+    const inputs = Array.from(document.getElementsByClassName('input'));
+    const errs = Array.from(document.getElementsByClassName('nteract-display-area-stderr'));
+    const objs = inputs.concat(errs)
+    if (this.state.isHidden) {
+      this.setState({ isHidden: false})
+      objs.forEach((obj) => obj.style.display = '');
+    } else {
+      this.setState({ isHidden: true})
+      objs.forEach((obj) => obj.style.display = 'none');
+    }
+  }
+
+  render() {
+    const { isHidden } = this.state;
+
+    return (
+      <button
+        id="hide-code"
+        className="ops"
+        variant="primary"
+        onClick={this.handleClick}
+      >
+        {isHidden ? 'Show Code' : 'Hide Code'}
+      </button>
+    );
+  }
+}
+
 class BrowseHeader extends React.Component<*> {
   props: {
     path: string,
@@ -79,6 +119,7 @@ class BrowseHeader extends React.Component<*> {
                 Run
               </a>
             ) : null}
+            <HideButton></HideButton>
             <a href={filePath} download className="ops">
               Download
             </a>
@@ -162,6 +203,11 @@ class BrowseHeader extends React.Component<*> {
 
           .ops:not(:last-child) {
             margin-right: 10px;
+          }
+
+          #hide-code {
+            white-space: nowrap;
+            margin-left: 10px;
           }
         `}</style>
       </nav>

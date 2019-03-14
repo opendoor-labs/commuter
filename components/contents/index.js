@@ -69,7 +69,9 @@ class NewNotebookPreview extends React.Component<*> {
         btn.onclick = () => toggleCell(btn, cell);
         var contentCell = cell.getElementsByTagName('div')[0];
         cell.insertBefore(btn, contentCell)
-      });`
+      });
+      hideCodeButton = document.getElementById('hide-code');
+      hideCodeButton.click();`
       document.body.appendChild(script);
   }
 
