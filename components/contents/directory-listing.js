@@ -32,6 +32,8 @@ const GroupedDirectoryListings = (props: DirectoryListingProps) => {
     return <DirectoryListing contents={contents} basepath={props.basepath} />;
   }
 
+  // TODO: Removed styled-jsx because it errors out in the file browser
+  // when returning from directory with letter headers to one without
   const groupNames = Object.keys(groups).sort();
 
   const listings = groupNames.map(key => (
@@ -40,7 +42,7 @@ const GroupedDirectoryListings = (props: DirectoryListingProps) => {
         {key}
       </div>
       <DirectoryListing contents={groups[key]} basepath={props.basepath} />
-      <style jsx>{`
+      <style>{`
         .letterHeader {
           padding-top: 1em;
           padding-bottom: 0.5em;
@@ -60,7 +62,7 @@ const GroupedDirectoryListings = (props: DirectoryListingProps) => {
         ))}
       </div>
       {listings}
-      <style jsx>{`
+      <style>{`
         a {
           text-decoration: none;
           padding-right: 1em;
