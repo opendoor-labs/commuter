@@ -16,7 +16,8 @@ const Link = ({ to, children, basepath }) => (
   </NextLink>
 );
 
-class HideButton extends React.Component {
+// The HideCodeButton toggles the visibility of notebook input and stderr cells
+class HideCodeButton extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -28,9 +29,12 @@ class HideButton extends React.Component {
   }
 
   handleClick() {
+    // code inputs
     const inputs = Array.from(document.getElementsByClassName('input'));
+    // error logs
     const errs = Array.from(document.getElementsByClassName('nteract-display-area-stderr'));
     const objs = inputs.concat(errs)
+    // toggle visibility
     if (this.state.isHidden) {
       this.setState({ isHidden: false})
       objs.forEach((obj) => obj.style.display = '');
@@ -47,7 +51,6 @@ class HideButton extends React.Component {
       <button
         id="hide-code"
         className="ops"
-        variant="primary"
         onClick={this.handleClick}
       >
         {isHidden ? 'Show Code' : 'Hide Code'}
@@ -86,6 +89,8 @@ class BrowseHeader extends React.Component<*> {
     // const serverSide = typeof document === "undefined";
     const viewingNotebook = filePath.endsWith(".ipynb");
 
+    // TODO: Removed styled-jsx because of JS errors
+    // But that impacts the header style a bit
     return (
       <nav>
         <ul className="breadcrumbs">
@@ -119,7 +124,7 @@ class BrowseHeader extends React.Component<*> {
                 Run
               </a>
             ) : null}
-            <HideButton></HideButton>
+            <HideCodeButton></HideCodeButton>
             <a href={filePath} download className="ops">
               Download
             </a>
